@@ -151,11 +151,6 @@ $MyServices = get-WmiObject Win32_service | Where-Object {$_.Startmode -contains
 select PSComputerName, Name, PathName, ProcessId, StartMode, StartName, State | ConvertTo-HTML -Fragment
 
 #Disk Data
-#$MyDisk = Get-WmiObject Win32_Volume |
-#Where { $_.drivetype -eq '3' -and $_.driveletter} |
-#Select-Object driveletter,@{Name='capacity';Expression={$_.capacity/1GB}},@{Name='freespace';Expression={$_.freespace/1GB}} |
-#ConvertTo-HTML -Fragment
-
 $MyDisk = Get-Volume | Where { $_.DriveType -eq 'Fixed' -Or $_.DriveType -eq 'Removable' } |
 Select DriveLetter, Filesystem, DriveType, Size, SizeRemaining | ConvertTo-HTML -Fragment
 
@@ -222,97 +217,4 @@ $MyBodyAll6 = "$MyBr $MyFWIT $MyFWInbound $MyBr $MyFWOUT $MyFWOutbound "
 ConvertTo-Html -Title $MyTitle -Body "$MyBodyAll1 $MyBodyAll2 $MyBodyAll3 $MyBodyAll4 $MyBodyAll5 $MyBodyAll6 " `
 -post $MyPost -CSSUri ".\dc_3.css" | out-file "$MyUrlFile"
 
-#Call IE
 
-#$IE=new-object -com internetexplorer.application
-#$IE.navigate("$MyPath\$MyUrlFile")
-#$IE.visible=$true
-
-===========================================================
-
-CSS File copy the below and call it dc_3.css
-
-/*
-#FILE NAME:dc_3.css
-#DESCRIPTION:Custom Style for iOpsMon Reports
-#USAGE:Used as part of the iOpsMon Reports
-#DATE:19/01/2016
-#VERSION:V0.1
-#Owner: Deepak Chohan
-*/
-
-body
-{
-background-color: rgb(38, 38, 38);
-border-style: solid;
-border-color: rgb(242, 242, 242);
-border-width: 3px;
-border-radius:10px;
-}
-
-h1
-{
-
-Color: rgb(255, 255, 255);
-text-shadow: 4px 4px 6px #000000;
-text-align: center;
-Font-Family: Verdana;
-font-size: 30px;
-}
-
-h2
-{
-Color: rgb(255, 255, 255);
-text-transform: capitalize;
-text-align: left;
-text-shadow: 4px 4px 6px #000000;
-Font-Family: Verdana;
-font-size: 20px;
-Padding: 5px;
-}
-
-h3
-{
-text-transform: lowercase;
-}
-
-table
-
-{
-Margin: 0px 0px 0px 4px;
-Border: 1px solid rgb(190, 190, 190);
-Font-Family: Verdana;
-Font-Size: 8pt;
-Background-Color: rgb(252, 252, 252);
-text-align: left;
-
-}
-
-tr:hover td
-{
-Background-Color: rgb(243, 243, 34);
-Color: rgb(0, 0, 0);
-font-weight: bold;
-}
-
-tr:nth-child(even)
-{
-Background-Color: rgb(242, 242, 242);
-}
-
-th
-{
-Text-Align: Left;
-Color: rgb(0, 0, 0);
-Background-Color: rgb(39, 137, 217);
-Padding: 1px 4px 1px 4px;
-font-weight: bold;
-}
-
-td
-{
-Vertical-Align: Top;
-Padding: 1px 4px 1px 4px;
-}
-
-===========================================================
